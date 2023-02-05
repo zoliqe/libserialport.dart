@@ -194,6 +194,10 @@ abstract class SerialPort {
   /// Gets the status of the control signals for the serial port.
   int get signals;
 
+  set dtr(int value);
+
+  set rts(int value);
+
   /// Puts the port transmit line into the break state.
   bool startBreak();
 
@@ -386,6 +390,12 @@ class _SerialPortImpl implements SerialPort {
     ffi.calloc.free(ptr);
     return value;
   }
+
+  @override
+  set dtr(int value) => dylib.sp_set_dtr(_port, value);
+
+  @override
+  set rts(int value) => dylib.sp_set_rts(_port, value);
 
   @override
   bool startBreak() => dylib.sp_start_break(_port) == sp_return.SP_OK;
